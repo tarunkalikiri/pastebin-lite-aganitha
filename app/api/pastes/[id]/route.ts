@@ -11,9 +11,9 @@ function now(req: NextRequest) {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params;
 
   const { rows } = await pool.query(
     "SELECT * FROM pastes WHERE id=$1",
