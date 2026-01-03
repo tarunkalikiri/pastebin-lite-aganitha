@@ -1,7 +1,9 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 
-function now(req: NextRequest) {
+export const runtime = "nodejs";
+
+function now(req: Request) {
   if (process.env.TEST_MODE === "1") {
     const h = req.headers.get("x-test-now-ms");
     if (h) return Number(h);
@@ -9,11 +11,8 @@ function now(req: NextRequest) {
   return Date.now();
 }
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
+export async function GET(req: Request, context: any) {
+  const id = context.params.id;
 
   const { rows } = await pool.query(
     "SELECT * FROM pastes WHERE id=$1",
