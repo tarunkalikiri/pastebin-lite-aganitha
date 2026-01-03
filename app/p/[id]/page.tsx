@@ -4,9 +4,9 @@ import { pool } from "@/lib/db";
 export default async function Paste({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
   const now = Date.now();
 
   const { rows } = await pool.query(
